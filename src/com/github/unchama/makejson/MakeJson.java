@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import com.github.unchama.SeichiAssistBungee;
-
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.config.ServerInfo;
+
+import com.github.unchama.SeichiAssistBungee;
 
 // 出力対象
 // ・BungeeCord全体での最大人数(bungeecord.player_limit)
@@ -28,9 +28,9 @@ public class MakeJson {
 	// ログ件数
 	private static final int LOG_COUNT = 20;
 	// 計測周期（秒）
-	private static final int CYCLIC = 300;
+	private static final int CYCLIC = 30;
 	// 対象外ワールド
-	private static final List<String> ignore = Arrays.asList("s4", "event");
+	private static final List<String> ignore = Arrays.asList("deb");
 
 	public MakeJson(SeichiAssistBungee plugin) {
 		BungeeCord.getInstance().getScheduler().schedule(plugin, new Runnable() {
@@ -42,7 +42,7 @@ public class MakeJson {
 					Map.Entry<String, ServerInfo> entry = iterator.next();
 					// 除外ワールド判定
 					if (ignore.contains(entry.getKey())) {
-						return;
+						continue;
 					}
 					// サーバー名とオンラインプレイヤー数を取得
 					svinfo.add("\"" + entry.getKey() + "\":" + entry.getValue().getPlayers().size());
