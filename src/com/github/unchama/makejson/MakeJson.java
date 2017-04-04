@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import com.github.unchama.SeichiAssistBungee;
+
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.config.ServerInfo;
-
-import com.github.unchama.SeichiAssistBungee;
 
 // 出力対象
 // ・BungeeCord全体での最大人数(bungeecord.player_limit)
@@ -72,7 +72,8 @@ public class MakeJson {
 					List<String> log = new ArrayList<String>();
 					String line = br.readLine();
 					while (line != null) {
-						log.add(line);
+						// []とカンマを除去して読み込み
+						log.add(line.replace("[", "").replace("]", "").replace(",", ""));
 						line = br.readLine();
 					}
 					br.close();
@@ -83,9 +84,11 @@ public class MakeJson {
 					log.add(jdata);
 					// 書き込み
 					FileWriter filewriter = new FileWriter(file);
-					for (String buffer : log) {
-						filewriter.write(buffer + "\r\n");
+					filewriter.write("[");
+					for (int cnt=0; cnt<log.size() - 2; cnt++) {
+						filewriter.write(log.get(cnt) + ",\r\n");
 					}
+					filewriter.write(log.get(log.size() - 1) + "]");
 					filewriter.close();
 					// ログ
 					// System.out.println("[SeichiAssistBungee] MakeJson: server
